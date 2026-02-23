@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
-Write a Python script that, using this REST API, for a given
-employee ID, returns information about his/her TODO list progress.
+Fetches and displays an employee's TODO list progress
+using a REST API.
 """
 
 import requests
@@ -9,41 +9,40 @@ import sys
 
 
 if __name__ == "__main__":
-    EMPLOYEE_ID = sys.argv[1]
+    employee_id = sys.argv[1]
 
-    USER_URL = (
+    user_url = (
         "https://jsonplaceholder.typicode.com/users/{}"
-        .format(EMPLOYEE_ID)
+        .format(employee_id)
     )
-    TODO_URL = (
+    todos_url = (
         "https://jsonplaceholder.typicode.com/todos"
-        "?userId={}".format(EMPLOYEE_ID)
+        "?userId={}".format(employee_id)
     )
 
-    USER_RESPONSE = requests.get(USER_URL)
-    TODO_RESPONSE = requests.get(TODO_URL)
+    user_response = requests.get(user_url)
+    todos_response = requests.get(todos_url)
 
-    USER_DATA = USER_RESPONSE.json()
-    TODOS = TODO_RESPONSE.json()
+    user_data = user_response.json()
+    todos = todos_response.json()
 
-    EMPLOYEE_NAME = USER_DATA.get("name")
-    TOTAL_NUMBER_OF_TASKS = len(TODOS)
+    employee_name = user_data.get("name")
+    total_number_of_tasks = len(todos)
 
-    NUMBER_OF_DONE_TASKS = 0
-    for TASK in TODOS:
-        if TASK.get("completed"):
-            NUMBER_OF_DONE_TASKS += 1
+    number_of_done_tasks = 0
+    for task in todos:
+        if task.get("completed") is True:
+            number_of_done_tasks += 1
 
     print(
         "Employee {} is done with tasks({}/{}):"
         .format(
-            EMPLOYEE_NAME,
-            NUMBER_OF_DONE_TASKS,
-            TOTAL_NUMBER_OF_TASKS
+            employee_name,
+            number_of_done_tasks,
+            total_number_of_tasks
         )
     )
 
-    for TASK in TODOS:
-        if TASK.get("completed"):
-            TASK_TITLE = TASK.get("title")
-            print("\t {}".format(TASK_TITLE))
+    for task in todos:
+        if task.get("completed") is True:
+            print("\t {}".format(task.get("title")))
