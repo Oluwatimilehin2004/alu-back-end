@@ -5,8 +5,9 @@ Fetch an employee's TODO list progress from JSONPlaceholder API
 and display completed tasks in the specified format.
 """
 
-import requests
 import sys
+import requests
+
 
 def main():
     if len(sys.argv) != 2:
@@ -20,8 +21,9 @@ def main():
         sys.exit(1)
 
     # Fetch employee info
-    user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-    todos_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+    BASE_URL = "https://jsonplaceholder.typicode.com"
+    user_url = f"{BASE_URL}/users/{employee_id}"
+    todos_url = f"{BASE_URL}/todos?userId={employee_id}"
 
     try:
         user_resp = requests.get(user_url)
@@ -35,16 +37,18 @@ def main():
     user_data = user_resp.json()
     todos_data = todos_resp.json()
 
-    employee_name = user_data.get("name", "Unknown")
-    total_tasks = len(todos_data)
-    completed_tasks = [task for task in todos_data if task["completed"]]
-    num_done = len(completed_tasks)
+    EMPLOYEE_NAME = user_data.get("name", "Unknown")
+    TOTAL_NUMBER_OF_TASKS = len(todos_data)
+    NUMBER_OF_DONE_TASKS = [task for task in todos_data if task["completed"]]
+    num_done = len(NUMBER_OF_DONE_TASKS)
 
     # Print summary line
-    print(f"Employee {employee_name} is done with tasks({num_done}/{total_tasks}):")
-    print(f"{employee_name}")
+    print(f"Employee {EMPLOYEE_NAME} is done with tasks({num_done}/{TOTAL_NUMBER_OF_TASKS}):")
+    print(f"{EMPLOYEE_NAME} has completed the following tasks:")
+    for task in NUMBER_OF_DONE_TASKS:
+        print(f"  {task['title']}")
     print(f"{num_done} tasks completed")
-    print(f"{total_tasks} tasks in total")
+    print(f"{TOTAL_NUMBER_OF_TASKS} tasks in total")
 
 if __name__ == "__main__":
     main()
