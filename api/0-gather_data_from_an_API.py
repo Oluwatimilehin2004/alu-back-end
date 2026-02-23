@@ -1,4 +1,4 @@
-#!/usr/bin/bash/python3
+#!/usr/bin/python3
 
 """
 Fetch an employee's TODO list progress from JSONPlaceholder API
