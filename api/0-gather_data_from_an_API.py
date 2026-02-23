@@ -1,12 +1,12 @@
-#!/bin/bash
+#!/bin/bash/python3
 
 """
 Fetch an employee's TODO list progress from JSONPlaceholder API
 and display completed tasks in the specified format.
 """
 
-import sys
 import requests
+import sys
 
 def main():
     if len(sys.argv) != 2:
